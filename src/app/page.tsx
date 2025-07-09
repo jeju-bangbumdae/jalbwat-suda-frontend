@@ -1,16 +1,16 @@
 'use client';
-import styles from './page.module.css';
 import { Button } from '@vapor-ui/core';
-import { SomDiv } from './dummyStyle';
 
 export default function Home() {
   return (
-    <div className={styles.page}>
-      <main className={styles.main}>
-        <Button>너 됨?</Button>
-        
-        <SomDiv>스타일드 컴포넌트 확인용</SomDiv>
-      </main>
-    </div>
+    <main>
+      <Button>너 됨?</Button>
+      <ol>
+        <li>
+          Get started by editing <code>src/app/page.tsx</code>.
+        </li>
+        <li>Save and see your changes instantly.</li>
+      </ol>
+    </main>
   );
 }
