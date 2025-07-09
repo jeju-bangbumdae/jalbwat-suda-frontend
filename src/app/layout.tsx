@@ -5,6 +5,7 @@ import '@vapor-ui/core/styles.css';
 import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 import { GlobalStyle } from '@/styles/globalStyles';
 import { LayoutContainer } from '@/components/LayoutContainer';
+import { BottomNav } from '@/components/navigation/BottomNav';
 import Script from 'next/script';
 
 export const metadata: Metadata = {
@@ -21,7 +22,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body>
         <StyledComponentsRegistry>
           <GlobalStyle />
-          <LayoutContainer>{children}</LayoutContainer>
+          <main>
+            <LayoutContainer>
+              {children}
+            </LayoutContainer>
+          </main>
+          <BottomNav />
         </StyledComponentsRegistry>
       </body>
     </html>
