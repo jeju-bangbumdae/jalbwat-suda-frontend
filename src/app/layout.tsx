@@ -1,19 +1,9 @@
 import type { Metadata } from 'next';
 import { themeConfig } from '@/lib/theme.config';
 import { ThemeProvider, ThemeScript } from '@vapor-ui/core';
-// import { Geist, Geist_Mono } from 'next/font/google';
 import './globals.css';
 import '@vapor-ui/core/styles.css';
-
-// const geistSans = Geist({
-//   variable: '--font-geist-sans',
-//   subsets: ['latin'],
-// });
-
-// const geistMono = Geist_Mono({
-//   variable: '--font-geist-mono',
-//   subsets: ['latin'],
-// });
+import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -35,7 +25,9 @@ export default function RootLayout({
       </head>
       <body>
         {/* 동적 테마 관리를 위한 프로바이더 */}
-        <ThemeProvider config={themeConfig}>{children}</ThemeProvider>
+        <ThemeProvider config={themeConfig}>
+          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
+        </ThemeProvider>
       </body>
     </html>
   );

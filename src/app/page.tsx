@@ -1,6 +1,8 @@
+'use client';
 import Image from 'next/image';
 import styles from './page.module.css';
 import { Button } from '@vapor-ui/core';
+import { SomDiv } from './dummyStyle';
 
 export default function Home() {
   return (
@@ -15,6 +17,7 @@ export default function Home() {
           priority
         />
         <Button>너 됨?</Button>
+        <SomDiv>스타일드 컴포넌트 확인용</SomDiv>
         <ol>
           <li>
             Get started by editing <code>src/app/page.tsx</code>.
