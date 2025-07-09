@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 
 import './globals.css';
 import '@vapor-ui/core/styles.css';
-import StyledComponentsRegistry from '@/lib/registry';
+import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 import { GlobalStyle } from '@/styles/globalStyles';
 import { LayoutContainer } from '@/components/LayoutContainer';
 
