@@ -1,9 +1,10 @@
 import type { Metadata } from 'next';
-import { themeConfig } from '@/lib/theme.config';
-import { ThemeProvider, ThemeScript } from '@vapor-ui/core';
+
 import './globals.css';
 import '@vapor-ui/core/styles.css';
-import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
+import StyledComponentsRegistry from '@/lib/registry';
+import { GlobalStyle } from '@/styles/globalStyles';
+import { LayoutContainer } from '@/components/LayoutContainer';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,22 +13,18 @@ export const metadata: Metadata = {
 
 export default function RootLayout({
   children,
-}: Readonly<{
+}: {
   children: React.ReactNode;
-}>) {
+}) {
   return (
-    <html lang="ko" suppressHydrationWarning>
-      <head>
-        {/* FOUC 방지를 위한 스크립트입니다.
-          <head> 태그의 최상단에 위치하는 것을 권장합니다.
-        */}
-        <ThemeScript config={themeConfig} />
-      </head>
+    <html lang="en">
       <body>
-        {/* 동적 테마 관리를 위한 프로바이더 */}
-        <ThemeProvider config={themeConfig}>
-          <StyledComponentsRegistry>{children}</StyledComponentsRegistry>
-        </ThemeProvider>
+        <StyledComponentsRegistry>
+          <GlobalStyle />
+          <LayoutContainer>
+            {children}
+          </LayoutContainer>
+        </StyledComponentsRegistry>
       </body>
     </html>
   );
