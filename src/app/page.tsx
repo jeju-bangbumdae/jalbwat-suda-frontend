@@ -8,7 +8,6 @@ export default function Home() {
     <div className={styles.page}>
       <main className={styles.main}>
         <Button>너 됨?</Button>
-        
         <SomDiv>스타일드 컴포넌트 확인용</SomDiv>
       </main>
     </div>

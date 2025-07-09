@@ -5,6 +5,7 @@ import '@vapor-ui/core/styles.css';
 import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 import { GlobalStyle } from '@/styles/globalStyles';
 import { LayoutContainer } from '@/components/LayoutContainer';
+import { BottomNav } from '@/components/navigation/BottomNav';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -21,9 +22,12 @@ export default function RootLayout({
       <body>
         <StyledComponentsRegistry>
           <GlobalStyle />
-          <LayoutContainer>
-            {children}
-          </LayoutContainer>
+          <main>
+            <LayoutContainer>
+              {children}
+            </LayoutContainer>
+          </main>
+          <BottomNav />
         </StyledComponentsRegistry>
       </body>
     </html>
