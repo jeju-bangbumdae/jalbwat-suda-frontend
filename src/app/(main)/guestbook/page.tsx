@@ -6,7 +6,7 @@ import { MapBottomModal } from '@/components/map/MapBottomModal';
 
 // import { useSearchParams } from 'next/navigation';
 import Script from 'next/script';
-import { Suspense, useEffect, useState } from 'react';
+import { Suspense, useState } from 'react';
 import { BottomNav } from '@/components/navigation/BottomNav';
 import { Spinner } from '@/components/common/Spinner/Spinner';
 
@@ -73,15 +73,7 @@ export default function Page() {
   //   });
   // }, [reqData?.[0]?.x]);
 
-  console.log("env!! - kakao key: ", process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-  console.log("env!! - Process : ", process);
-  console.log("env!! - process.env: ", process.env);
 
-  useEffect(() => {
-  console.log("[useEffect] env!! - kakao key: ", process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
-  console.log("[useEffect] env!! - Process : ", process);
-  console.log("[useEffect] env!! - process.env: ", process.env);
-  }, [])
   return (
     <>
       {/* category설정하기 */}
