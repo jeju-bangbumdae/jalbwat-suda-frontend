@@ -22,6 +22,7 @@ export const MapBox = ({
   // 1.지도 그리기
   const drawMap = () => {
     if (!window?.kakao?.maps) return;
+
     const center = mapOptions?.center ?? [33.45012664348227, 126.91831460907449]; // 없으면 기본값
     const level = mapOptions?.level ?? 5;
 
@@ -65,15 +66,12 @@ export const MapBox = ({
         });
       });
   };
-  // TODO: selectedStore 인걸로 마커나 목록에서 다르게 보여주기?
 
+  // TODO: selectedStore 인걸로 마커나 목록에서 다르게 보여주기?
   useEffect(() => {
-    if (!window.kakao || !window.kakao.maps) return;
-    // SDK 로드 이후 실행
-    window.kakao.maps.load(() => {
-      drawMap();
-      displayMarker();
-    });
+    if (!mapOptions?.center) return;
+    drawMap();
+    displayMarker();
   }, [mapOptions]);
 
   return <MapContainer ref={mapContainerRef} />;

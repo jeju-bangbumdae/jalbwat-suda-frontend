@@ -69,7 +69,6 @@ export default function Page() {
     });
     if (data) setStoreList(data);
   };
-
   const debouncedFetch = useMemo(() => debounce(fetchData, 500), [category]);
   useEffect(() => {
     debouncedFetch(latLon);
