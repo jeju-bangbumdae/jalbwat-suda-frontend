@@ -1,11 +1,12 @@
 import type { Metadata } from 'next';
 
 import '../styles/font.css';
+import '../styles/color.css';
 import '@vapor-ui/core/styles.css';
 import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 import { GlobalStyle } from '@/styles/globalStyles';
 import { LayoutContainer } from '@/components/LayoutContainer';
-import { BottomNav } from '@/components/navigation/BottomNav';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -15,6 +16,9 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="ko">
+      <Script
+        src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}&libraries=services`}
+      ></Script>
       <body>
         <StyledComponentsRegistry>
           <GlobalStyle />
@@ -23,7 +27,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               {children}
             </LayoutContainer>
           </main>
-          <BottomNav />
         </StyledComponentsRegistry>
       </body>
     </html>
