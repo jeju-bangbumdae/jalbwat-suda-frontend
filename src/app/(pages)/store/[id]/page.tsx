@@ -24,7 +24,7 @@ export default function Page() {
     const fetchData = async () => {
       const guestbookData = await getGuestBooksByStoreApi({ storeId: +id });
       const storeData = await getStoreApi({ storeId: +id });
-      if (guestbookData && storeData)
+      if (storeData)
         setStoreInfo({
           store: storeData,
           guestbookList: guestbookData,
@@ -55,7 +55,15 @@ export default function Page() {
           {storeInfo?.guestbookList ? (
             <GuestBookList data={storeInfo?.guestbookList} />
           ) : (
-            <Spinner size={100} color="gray" />
+            <Spinner size={100} color="gray" style={{ marginTop: '30px' }} />
+          )}
+          {storeInfo?.guestbookList?.length == 0 && (
+            <Text
+              typography="body2"
+              style={{ color: 'var(--color-gray-600)', textAlign: 'center' }}
+            >
+              작성된 방명록이 없습니다.
+            </Text>
           )}
         </ScrollArea>
       </GuestbookModal>

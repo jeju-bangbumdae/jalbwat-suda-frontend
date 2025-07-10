@@ -1,5 +1,7 @@
 'use client';
 
+import FirstGuestbookModal from '@/components/myPage/FirstGuestbookModal';
+import ThreePointModal from '@/components/myPage/ThreePointModal';
 import { BottomNav } from '@/components/navigation/BottomNav';
 import TopBar from '@/components/navigation/TopBar';
 import { Card, Text } from '@vapor-ui/core';
@@ -56,6 +58,9 @@ export default function Page() {
         <CardUI rewardScore={3} badgeCnt={1} />
       </ProfileModal>
       <BottomNav />
+      {/* 모달 */}
+      <ThreePointModal />
+      <FirstGuestbookModal />
     </>
   );
 }

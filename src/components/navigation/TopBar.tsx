@@ -39,7 +39,7 @@ const TopBar = ({
         </div>
       )}
       <MainTitlePart>
-        <Title>{title || hasSetting ? '' : '로딩 중'}</Title>
+        <Title>{title || (hasSetting ? '' : '로딩 중')}</Title>
         {!!operationTime && (
           <InfoDl>
             <dt>
