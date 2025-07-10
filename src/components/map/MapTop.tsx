@@ -2,14 +2,22 @@
 import { CATEGORY_LIST } from '@/constant/commonConstant';
 import { Button } from '@vapor-ui/core';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 import styled from 'styled-components';
 
-export const MapTop = () => {
+type Props = {
+  setLatLon: Dispatch<SetStateAction<LatLonType | undefined>>;
+  kakaoMapRef: RefObject<any>;
+};
+
+export const MapTop = ({ setLatLon, kakaoMapRef }: Props) => {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const router = useRouter();
 
   const handleClickButton = (newCate) => {
+    const center = kakaoMapRef.current.getCenter();
+    setLatLon({ lat: center.getLat(), lon: center?.getLng() });
     router.replace(`/guestbook?category=${category == newCate ? '' : newCate}`);
   };
 

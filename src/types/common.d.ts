@@ -14,13 +14,21 @@ type StoreType = {
   phone: string;
   guestBookCount: number;
 };
+type MapOptionsType = {
+  center: number[];
+  level: number;
+};
+type LatLonType = {
+  lat: string;
+  lon: string;
+};
 
 type GuestBookType = {
   id: number;
   storeId: number;
-  name: string;
-  address: string;
-  category: string;
+  storeName: string;
+  storeAddress: string;
+  storeCategory: string;
   qna?: {
     question: string;
     answer: string;

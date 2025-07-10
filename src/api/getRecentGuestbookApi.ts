@@ -5,7 +5,7 @@ export const getRecentGuestbookApi = async () => {
     const response = await tokenInstance.get('/api/v1/guest-books');
     const data = await response.data;
     console.log(data, 'data');
-    return data as GuestBookType;
+    return data as GuestBookType[];
   } catch (error: any) {
     console.error(error);
   }
