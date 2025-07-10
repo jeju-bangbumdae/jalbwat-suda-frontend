@@ -18,13 +18,13 @@ spec:
         ports:
         - containerPort: 3000
         volumeMounts:
-          - name: config-volume
-            mountPath: /app/.env
-            subPath: .env
-      volumes:
         - name: config-volume
-          configMap:
-            name: kakao-config
+          mountPath: /app/config
+          readOnly: true
+      volumes:
+      - name: config-volume
+        configMap:
+          name: react-frontend-config
 ---
 apiVersion: v1
 kind: Service
