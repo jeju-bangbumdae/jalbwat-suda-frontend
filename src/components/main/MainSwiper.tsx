@@ -7,6 +7,7 @@ import styled from 'styled-components';
 import { Avatar, Text } from '@vapor-ui/core';
 import Link from 'next/link';
 import { CATEGORY_LIST } from '@/constant/commonConstant';
+import Image from 'next/image';
 
 const data = [
   {
@@ -41,6 +42,9 @@ const data = [
 export const MainSwiper = () => {
   return (
     <Background>
+      <h1>
+        <Image src={'/images/logo.svg'} width={110} height={74} alt="잘봤수다 로고" />
+      </h1>
       <SSwiper effect={'cards'} grabCursor={true} modules={[EffectCards]}>
         {data?.map((el, idx) => {
           return (
@@ -53,6 +57,8 @@ export const MainSwiper = () => {
                       shape="circle"
                       alt={el?.store}
                       src={`/images/${el.category}.svg`}
+                      style={{ border: '1px solid black' }}
+                      // TODO: 디자이너분 여쭤보기 보더
                     >
                       <Avatar.Image />
                       <Avatar.Fallback>{el?.store?.[0]}</Avatar.Fallback>
@@ -88,10 +94,13 @@ export const MainSwiper = () => {
 
 const Background = styled.div`
   display: flex;
+  flex-direction: column;
+  gap: 20px;
   align-items: center;
   justify-content: center;
   height: calc(100vh - 100px);
   background: url('/images/background.png');
+  background-size: cover;
 `;
 
 const SSwiper = styled(Swiper)`
@@ -160,7 +169,6 @@ const SlideInner = styled.div`
       display: inline-block;
       width: 100%;
       text-align: right;
-      margin-top: 20px;
     }
   }
 `;

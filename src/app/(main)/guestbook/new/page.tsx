@@ -1,4 +1,5 @@
 'use client';
+import { BottomButton } from '@/components/buttons/BottomButton';
 import CustomTextArea from '@/components/common/Fields/CustomTextArea';
 import CustomTextField from '@/components/common/Fields/CustomTextField';
 import TopBar from '@/components/navigation/TopBar';
@@ -22,6 +23,11 @@ export default function Page() {
   const [question, setQuestion] = useState<string>('');
   const [content, setContent] = useState<string>('');
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    
+  };
+
   return (
     <>
       <TopBar isBack title={data?.name} call={data?.phone} operationTime={data?.operationTime} />
@@ -43,13 +49,21 @@ export default function Page() {
           label={
             <LabelBox>
               <span>Q</span>
-              방명록을 적어주세요.
+              방명록을 적어주세요. (30자 이상)
             </LabelBox>
           }
-          placeholder="방명록을 적어주세요."
+          id={'content'}
+          placeholder="30자 이상 작성해주세요."
           value={content}
           onChange={(value) => setContent(value)}
         />
+        <BottomButton
+          disabled={!question || content?.length < 30}
+          onClick={handleSubmit}
+          fromBottom={'0'}
+        >
+          확인
+        </BottomButton>
       </GuestbookForm>
     </>
   );
@@ -61,7 +75,18 @@ const GuestbookForm = styled.form`
   border-radius: 20px 20px 0 0;
   background-color: var(--color-white);
   box-shadow: 0 -4px 4px 0 rgba(0, 0, 0, 0.08);
-  padding: 60px 20px 0;
+  padding: 40px 20px 0;
+
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  h3 {
+    padding-left: 10px;
+  }
+  fieldset {
+    margin-bottom: 100px;
+  }
 `;
 
 const LabelBox = styled.span`
