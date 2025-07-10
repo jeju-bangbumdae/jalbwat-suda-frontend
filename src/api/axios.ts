@@ -1,23 +1,22 @@
 import axios, { AxiosError, AxiosInstance } from 'axios';
-import config from '@/lib/config';
 
 // none-member token 호출시 사용할 Instance
 export const tokenInstance: AxiosInstance = axios.create({
-  baseURL: config.NEXT_PUBLIC_API_URL,
+  baseURL: 'https://backend-team3.goorm.training',
+  withCredentials: true,
 });
 
 // 기본적인 api 호출시 사용할 Instance
 export const baseInstance: AxiosInstance = axios.create({
-  baseURL: config.NEXT_PUBLIC_API_URL,
+  baseURL: 'https://backend-team3.goorm.training',
   headers: {
     'Content-Type': 'application/x-www-form-urlencoded',
-    Authorization: `Bearer ${localStorage.getItem('none-member-token')}`,
   },
 });
 
 baseInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('none-member-token');
+    const token = localStorage.getItem('token');
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
