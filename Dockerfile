@@ -3,7 +3,7 @@ FROM node:18 AS builder
 
 # 앱 디렉토리 설정
 # 컨테이너 내부의 /app 디렉토리를 작업 디렉토리로 설정합니다.
-WORKDIR src/app
+WORKDIR /app
 
 COPY package*.json ./
 
