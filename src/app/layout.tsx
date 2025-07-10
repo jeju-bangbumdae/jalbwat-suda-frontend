@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 
 import '../styles/font.css';
+import '../styles/color.css';
 import '@vapor-ui/core/styles.css';
 import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 import { GlobalStyle } from '@/styles/globalStyles';
