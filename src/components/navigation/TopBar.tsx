@@ -16,7 +16,15 @@ interface Props {
   height?: string;
 }
 
-const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = false, hasSetting = false, height }: Props) => {
+const TopBar = ({
+  isBack = false,
+  title = '',
+  call,
+  operationTime,
+  hasMapBtn = false,
+  hasSetting = false,
+  height,
+}: Props) => {
   const { id } = useParams();
   const router = useRouter();
   const handleClickMapBtn = () => {
@@ -25,29 +33,42 @@ const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = f
 
   return (
     <Container $height={height}>
-      {isBack && <div style={{position: "absolute", left: "20px"}}><BackButton />
-      </div>}
+      {isBack && (
+        <div style={{ position: 'absolute', left: '20px' }}>
+          <BackButton />
+        </div>
+      )}
       <MainTitlePart>
-        <Title>{title || '로딩 중'}</Title>
-        {!!operationTime && <InfoDl>
-          <dt>
-            <Image src={'/images/time.svg'} className="time" width={13} height={13} alt={'시간'} />
-            영업시간
-          </dt>
-          <dd>{operationTime || '-'}</dd>
-        </InfoDl>}
-        {!!call && <InfoDl>
-          <dt>
-            <Image
-              src={'/images/call.svg'}
-              width={18}
-              height={18}
-              alt={'번호'}
-              className="callIcon"
-            />
-          </dt>
-          <dd>{call || '-'}</dd>
-        </InfoDl>}
+        <Title>{title || hasSetting ? '' : '로딩 중'}</Title>
+        {!!operationTime && (
+          <InfoDl>
+            <dt>
+              <Image
+                src={'/images/time.svg'}
+                className="time"
+                width={13}
+                height={13}
+                alt={'시간'}
+              />
+              영업시간
+            </dt>
+            <dd>{operationTime || '-'}</dd>
+          </InfoDl>
+        )}
+        {!!call && (
+          <InfoDl>
+            <dt>
+              <Image
+                src={'/images/call.svg'}
+                width={18}
+                height={18}
+                alt={'번호'}
+                className="callIcon"
+              />
+            </dt>
+            <dd>{call || '-'}</dd>
+          </InfoDl>
+        )}
         {hasMapBtn && (
           <>
             <MapButton size="md" color="contrast" variant={'outline'} onClick={handleClickMapBtn}>
@@ -57,14 +78,16 @@ const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = f
           </>
         )}
       </MainTitlePart>
-      {hasSetting && <IconButton
-        className='tail'
-        aria-label="설정"
-        variant="ghost"
-        style={{ position: 'absolute', right: '20px', top: '23px' }} // 직접 위치 지정
-      >
-        <SettingIcon />
-      </IconButton>}
+      {hasSetting && (
+        <IconButton
+          className="tail"
+          aria-label="설정"
+          variant="ghost"
+          style={{ position: 'absolute', right: '20px', top: '23px' }} // 직접 위치 지정
+        >
+          <SettingIcon />
+        </IconButton>
+      )}
     </Container>
   );
 };
@@ -80,7 +103,7 @@ const Container = styled.div<{ $height?: string }>`
   padding-top: 23px;
   background-image: linear-gradient(#fff0c5, #eea14e);
 
-  height: ${props => props.$height ?? "auto"};
+  height: ${(props) => props.$height ?? 'auto'};
 `;
 
 const MainTitlePart = styled.div`
