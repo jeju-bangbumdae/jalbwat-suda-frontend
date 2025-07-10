@@ -92,15 +92,6 @@ const TextContainer = styled.div`
   flex-shrink: 0; // 크기 고정
 `;
 
-// const ScrollArea = styled.div`
-//   flex: 1;
-//   overflow-y: auto;
-//   padding: 0 0 20px;
-//   display: flex;
-//   flex-direction: column;
-//   gap: 20px;
-// `;
-
 const CustomBody = styled(Card.Body)`
   display: flex;
   justify-content: center;
