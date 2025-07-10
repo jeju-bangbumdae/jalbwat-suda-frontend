@@ -9,7 +9,7 @@ export default function HomePage({ baseURL }) {
 
 	const getData = async () => {
 		try {
-			const res = await axios.get(`${baseURL}/`)
+			const res = await axios.get(`${baseURL}/health`)
 			console.log(res)
 		} catch (error) {
 			console.log(error)
