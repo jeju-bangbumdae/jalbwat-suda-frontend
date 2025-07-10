@@ -43,4 +43,4 @@ EXPOSE 3000
 # 'serve' 명령어를 사용하여 'build' 디렉토리의 정적 파일을 3000번 포트로 실행합니다.
 # CMD ["serve", "-s", "build", "-l", "3000"]
 
-CMD["npm", "start"]
+CMD ["npm", "start"]
