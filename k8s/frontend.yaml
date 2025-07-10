@@ -21,6 +21,12 @@ spec:
         - name: config-volume
           mountPath: /app/config
           readOnly: true
+        env:
+          - name: KAKAO_JS_API_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: team3-config # ConfigMap의 Metadata의 name
+                key: NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
       volumes:
       - name: config-volume
         configMap:
