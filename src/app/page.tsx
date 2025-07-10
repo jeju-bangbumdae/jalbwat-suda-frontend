@@ -14,7 +14,7 @@ export default function Home() {
 
   const getData = async () => {
       try {
-        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/api`)
+        const res = await axios.get(`${process.env.NEXT_PUBLIC_API_URL}/`)
         console.log(res)
       } catch (error) {
         console.log(error)
