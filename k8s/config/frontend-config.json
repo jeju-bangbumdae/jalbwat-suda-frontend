@@ -1,4 +1,4 @@
 {
-    "REACT_APP_API_URL": "https://api.example.com"
+    "NEXT_PUBLIC_API_URL": "https://backend-service.goormthon-3.svc:8080"
 }
   
