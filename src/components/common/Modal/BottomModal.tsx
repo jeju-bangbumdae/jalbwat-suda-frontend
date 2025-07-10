@@ -3,9 +3,8 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-export const BottomModal = ({ isOpen, onClose, children }: {
+export const BottomModal = ({ isOpen, children }: {
   isOpen: boolean;
-  onClose: () => void;
   children: React.ReactNode;
 }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
