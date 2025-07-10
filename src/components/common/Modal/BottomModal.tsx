@@ -3,9 +3,14 @@
 import React, { useRef, useState } from 'react';
 import styled from 'styled-components';
 
-export const BottomModal = ({ isOpen, children }: {
+export const BottomModal = ({
+  isOpen,
+  children,
+  isBottomNavShow,
+}: {
   isOpen: boolean;
   children: React.ReactNode;
+  isBottomNavShow?: boolean;
 }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
   const [height, setHeight] = useState(300); // 초기 높이
@@ -36,7 +41,7 @@ export const BottomModal = ({ isOpen, children }: {
 
   return (
     <>
-      <CustomModal ref={sheetRef} style={{ height }}>
+      <CustomModal ref={sheetRef} style={{ height }} $isBottomNavShow={isBottomNavShow}>
         <Handle onMouseDown={onMouseDown} />
         <Content>{children}</Content>
       </CustomModal>
@@ -44,12 +49,11 @@ export const BottomModal = ({ isOpen, children }: {
   );
 };
 
-
 // 모달 시트
-const CustomModal = styled.div`
+const CustomModal = styled.div<{ $isBottomNavShow }>`
   position: fixed;
   left: 50%;
-  bottom: 0;
+  bottom: ${(P) => (P.$isBottomNavShow ? '100px' : 0)};
   transform: translateX(-50%);
   background: var(--color-white);
   border-top-left-radius: 20px;
@@ -59,7 +63,7 @@ const CustomModal = styled.div`
   overflow: hidden;
   width: 100%;
   max-width: 500px;
-  box-shadow: 0 -4px 4px 0 rgba(0,0,0,0.08);
+  box-shadow: 0 -4px 4px 0 rgba(0, 0, 0, 0.08);
 `;
 
 // 위아래 드래그 핸들
@@ -74,5 +78,5 @@ const Handle = styled.div`
 
 // 내용 부분
 const Content = styled.div`
-  padding: 35px 20px 50px;
+  padding: 10px 20px 50px;
 `;

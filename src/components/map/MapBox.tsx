@@ -7,11 +7,11 @@ export const MapBox = ({ markerdata, mapOptions, selectedPin, setSelectedPin }) 
 
   // 지도 그리기
   const drawMap = () => {
+    if (!window?.kakao?.maps) return;
     const options = {
-      center: new window.kakao.maps.LatLng(...mapOptions.center),
-      level: mapOptions.level,
+      center: new window.kakao.maps.LatLng(...mapOptions?.center),
+      level: mapOptions?.level,
     };
-
     if (mapContainerRef.current)
       kakaoMapRef.current = new window.kakao.maps.Map(mapContainerRef.current, options);
   };
@@ -22,14 +22,14 @@ export const MapBox = ({ markerdata, mapOptions, selectedPin, setSelectedPin }) 
     if (kakaoMapRef.current)
       markerdata.forEach((el) => {
         // 마커의 이미지정보
-        // const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-        //   imageSize = new window.kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-        //   imageOption = { offset: new window.kakao.maps.Point(27, 69) };
-        // const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
+        const imageSrc = '/images/mark.svg',
+          imageSize = new window.kakao.maps.Size(46, 63),
+          imageOption = { offset: new window.kakao.maps.Point(23, 65) };
+        const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
 
         // 지도에 생성할 마커
         const marker = new window.kakao.maps.Marker({
-          // image: markerImage,
+          image: markerImage,
           position: new window.kakao.maps.LatLng(el.x, el.y),
           clickable: true,
         });
@@ -44,9 +44,13 @@ export const MapBox = ({ markerdata, mapOptions, selectedPin, setSelectedPin }) 
   };
 
   useEffect(() => {
-    if (!window.kakao) return;
-    drawMap();
-    displayMarker();
+    if (!window.kakao || !window.kakao.maps) return;
+
+    // SDK 로드 이후 실행
+    window.kakao.maps.load(() => {
+      drawMap();
+      displayMarker();
+    });
   }, [mapOptions]);
 
   return <MapContainer ref={mapContainerRef} />;
@@ -54,5 +58,5 @@ export const MapBox = ({ markerdata, mapOptions, selectedPin, setSelectedPin }) 
 
 const MapContainer = styled.div`
   width: 100%;
-  height: 80vh;
+  height: calc(100vh - 100px);
 `;

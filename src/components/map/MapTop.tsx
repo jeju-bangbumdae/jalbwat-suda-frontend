@@ -1,22 +1,16 @@
 'use client';
+import { CATEGORY_LIST } from '@/constant/commonConstant';
 import { Button } from '@vapor-ui/core';
 import { useRouter, useSearchParams } from 'next/navigation';
 import styled from 'styled-components';
-
-const CATEGORY_LIST = [
-  { label: '식당', value: 'restaurant' },
-  { label: '카페', value: 'cafe' },
-  { label: '술집', value: 'bar' },
-  { label: '소품샵', value: 'giftshop' },
-];
 
 export const MapTop = () => {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const router = useRouter();
 
-  const handleClickButton = (category) => {
-    router.replace(`/map?category=${category}`);
+  const handleClickButton = (newCate) => {
+    router.replace(`/guestbook?category=${category == newCate ? '' : newCate}`);
   };
 
   return (
