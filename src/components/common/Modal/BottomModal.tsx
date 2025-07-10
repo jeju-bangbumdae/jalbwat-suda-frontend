@@ -13,7 +13,7 @@ export const BottomModal = ({
   isBottomNavShow?: boolean;
 }) => {
   const sheetRef = useRef<HTMLDivElement>(null);
-  const [height, setHeight] = useState(300); // 초기 높이
+  const [height, setHeight] = useState(200); // 초기 높이
 
   const startY = useRef(0);
   const startHeight = useRef(0);
@@ -79,4 +79,6 @@ const Handle = styled.div`
 // 내용 부분
 const Content = styled.div`
   padding: 10px 20px 50px;
+  height: calc(100% - 4px);
+  overflow-y: auto;
 `;

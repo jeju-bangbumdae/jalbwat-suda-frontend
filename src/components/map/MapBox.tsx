@@ -5,6 +5,7 @@ type Props = {
   kakaoMapRef: React.RefObject<any>;
   storeList: StoreType[];
   mapOptions: MapOptionsType | undefined;
+  setMapOptions: Dispatch<SetStateAction<MapOptionsType | undefined>>;
   selectedStore: StoreType | undefined;
   setSelectedStore: Dispatch<SetStateAction<StoreType | undefined>>;
 };
@@ -12,7 +13,8 @@ export const MapBox = ({
   kakaoMapRef,
   storeList,
   mapOptions,
-  selectedStore,
+  setMapOptions,
+  // selectedStore,
   setSelectedStore,
 }: Props) => {
   const mapContainerRef = useRef(null); // 지도를 담을 DOM
@@ -35,7 +37,8 @@ export const MapBox = ({
 
   // 2. 이미지 있는 마커 그리기
   const displayMarker = () => {
-    console.log(storeList, 'markerdata');
+    if (!storeList?.length) return;
+
     if (kakaoMapRef.current)
       storeList.forEach((el) => {
         // 마커의 이미지정보
@@ -54,13 +57,16 @@ export const MapBox = ({
         marker.setMap(kakaoMapRef.current);
 
         window.kakao.maps.event.addListener(marker, 'click', function () {
-          console.log(selectedStore, 'selectedStore');
+          setMapOptions({
+            center: [+el.lat, +el.lon],
+            level: 5,
+          });
           setSelectedStore(el);
         });
       });
   };
+  // TODO: selectedStore 인걸로 마커나 목록에서 다르게 보여주기?
 
-  
   useEffect(() => {
     if (!window.kakao || !window.kakao.maps) return;
     // SDK 로드 이후 실행

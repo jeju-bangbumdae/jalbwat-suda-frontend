@@ -10,6 +10,7 @@ import { CATEGORY_LIST } from '@/constant/commonConstant';
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { getRecentGuestbookApi } from '@/api/getRecentGuestbookApi';
+import { Spinner } from '../common/Spinner/Spinner';
 
 export const MainSwiper = () => {
   const [guestbookList, setGuestbookList] = useState<GuestBookType[]>([]);
@@ -27,48 +28,56 @@ export const MainSwiper = () => {
       <h1>
         <Image src={'/images/logo.svg'} width={110} height={74} alt="잘봤수다 로고" />
       </h1>
-      <SSwiper effect={'cards'} grabCursor={true} modules={[EffectCards]}>
-        {guestbookList?.map((el, idx) => {
-          return (
-            <SSwiperSlide key={idx}>
-              <Link href={`/store/${el.id}`} style={{ width: '100%' }}>
-                <SlideInner>
-                  <div>
-                    <Avatar.Root
-                      size="xl"
-                      shape="circle"
-                      alt={el?.storeName}
-                      src={`/images/${el.storeCategory}.svg`}
-                      style={{ border: '1px solid var(--vapor-color-gray-500)' }}
-                    >
-                      <Avatar.Image />
-                      <Avatar.Fallback>{el?.storeName?.[0]}</Avatar.Fallback>
-                    </Avatar.Root>
+
+      {!!guestbookList?.length ? (
+        <SSwiper effect={'cards'} grabCursor={true} modules={[EffectCards]}>
+          {guestbookList?.map((el, idx) => {
+            return (
+              <SSwiperSlide key={idx}>
+                <Link href={`/store/${el.id}`} style={{ width: '100%' }}>
+                  <SlideInner>
                     <div>
-                      <Text asChild typography="heading5">
-                        <h2>{el.storeName}</h2>
-                      </Text>
-                      <Text asChild>
-                        <address>
-                          {el.storeAddress?.split(' ').slice(0, 2).join(' ')} ·{' '}
-                          {CATEGORY_LIST?.find((item) => item.value == el.storeCategory)?.label}
-                        </address>
-                      </Text>
+                      <Avatar.Root
+                        size="xl"
+                        shape="circle"
+                        alt={el?.storeName}
+                        src={`/images/${el.storeCategory}.svg`}
+                        style={{ border: '1px solid var(--vapor-color-gray-500)' }}
+                      >
+                        <Avatar.Image />
+                        <Avatar.Fallback>{el?.storeName?.[0]}</Avatar.Fallback>
+                      </Avatar.Root>
+                      <div>
+                        <Text asChild typography="heading5">
+                          <h2>{el.storeName}</h2>
+                        </Text>
+                        <Text asChild>
+                          <address>
+                            {el.storeAddress?.split(' ').slice(0, 2).join(' ')} ·{' '}
+                            {CATEGORY_LIST?.find((item) => item.value == el.storeCategory)?.label}
+                          </address>
+                        </Text>
+                      </div>
                     </div>
-                  </div>
 
-                  <Text typography="body1" className="textContent">
-                    <p>{el.content}</p>
-                    <span>From.{el.user?.name}</span>
-                  </Text>
-                </SlideInner>
+                    <Text typography="body1" className="textContent">
+                      <p>{el.content}</p>
+                      <span>From.{el.user?.name}</span>
+                    </Text>
+                  </SlideInner>
 
-                <Text typeof="body1" style={{ color: 'var(--vapor-color-gray-500)' }}></Text>
-              </Link>
-            </SSwiperSlide>
-          );
-        })}
-      </SSwiper>
+                  <Text typeof="body1" style={{ color: 'var(--vapor-color-gray-500)' }}></Text>
+                </Link>
+              </SSwiperSlide>
+            );
+          })}
+        </SSwiper>
+      ) : (
+        <>
+          <Spinner size={150} color="var( --color-primary-orange)" />
+          <div style={{ height: '360px' }} />
+        </>
+      )}
     </Background>
   );
 };

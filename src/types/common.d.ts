@@ -14,6 +14,7 @@ type StoreType = {
   phone: string;
   guestBookCount: number;
 };
+
 type MapOptionsType = {
   center: number[];
   level: number;
@@ -39,4 +40,9 @@ type GuestBookType = {
     actor?: string;
     name: string;
   };
+};
+
+type QuestionType = {
+  id: number;
+  question: string;
 };

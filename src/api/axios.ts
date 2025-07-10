@@ -9,9 +9,7 @@ export const tokenInstance: AxiosInstance = axios.create({
 // 기본적인 api 호출시 사용할 Instance
 export const baseInstance: AxiosInstance = axios.create({
   baseURL: 'https://backend-team3.goorm.training',
-  headers: {
-    'Content-Type': 'application/x-www-form-urlencoded',
-  },
+  withCredentials: true,
 });
 
 baseInstance.interceptors.request.use(

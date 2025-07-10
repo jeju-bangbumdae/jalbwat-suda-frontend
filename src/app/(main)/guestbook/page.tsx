@@ -1,47 +1,32 @@
 'use client';
-
+import debounce from 'lodash.debounce';
 import { MapTop } from '@/components/map/MapTop';
 import { MapBox } from '@/components/map/MapBox';
 import { MapBottomModal } from '@/components/map/MapBottomModal';
-
-import { useSearchParams } from 'next/navigation';
 import Script from 'next/script';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { BottomNav } from '@/components/navigation/BottomNav';
 import { Spinner } from '@/components/common/Spinner/Spinner';
 import { getStoreListApi } from '@/api/getStoreListApi';
-
-// const storeList: StoreType[] = [
-//   {
-//     id: 2355,
-//     name: '구름식당',
-//     category: 'restaurant',
-//     address: '제주시 어쩌구 우동',
-//     operationTime: '월~금 09:00~24:00',
-//     phone: '010-3333-3333',
-//     guestBookCount: 10,
-//     lat: '33.45012664348227',
-//     lon: '126.91831460907449',
-//   },
-// ];
+import { getStoreApi } from '@/api/getStoreApi';
+import SearchParamProvider from './SearchParamProvider';
 
 export default function Page() {
   const [selectedStore, setSelectedStore] = useState<StoreType>();
-  const searchParams = useSearchParams();
-  const category = searchParams.get('category');
+  const [storeId, setStoreId] = useState<string | undefined>();
+  const [category, setCategory] = useState<string | undefined>();
   const [mapOptions, setMapOptions] = useState<MapOptionsType>();
   const [latLon, setLatLon] = useState<LatLonType>();
   const [storeList, setStoreList] = useState<StoreType[]>([]);
-  const kakaoMapRef = useRef<any>(null); // 지도 객체
+  const kakaoMapRef = useRef<any>(null);
 
-  // 1. 현재 위치 파악 혹은 제주도 정중앙으로 latlon
   const onLoadKakaoAPI = async () => {
+    if (!window.kakao) return;
+
     window.kakao.maps.load(() => {
-      console.log('env!! - in load : ', process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
+      if (storeId) return;
       const getGeoSuccess = (event) => {
         setLatLon({
-          // lat: '37.56',
-          // lon: '126.99',
           lat: event.coords.latitude,
           lon: event.coords.longitude,
         });
@@ -56,21 +41,41 @@ export default function Page() {
     });
   };
 
-  // 2. latLon, category이 바뀔때 목록 불러오기
   useEffect(() => {
-    if (!latLon?.lat) return;
+    if (!storeId) onLoadKakaoAPI();
+  }, [storeId]);
+
+  useEffect(() => {
+    if (!storeId) return;
     const fetchData = async () => {
-      const data = await getStoreListApi({
-        lat: latLon?.lat,
-        lon: latLon?.lon,
-        category: category || '',
-      });
-      if (data) setStoreList(data);
+      const data = await getStoreApi({ storeId: +storeId });
+      if (data) {
+        setStoreList([data]);
+        setMapOptions({
+          center: [+data.lat, +data.lon],
+          level: 5,
+        });
+      }
     };
     fetchData();
+  }, [storeId]);
+
+  const fetchData = async (latLon) => {
+    if (!latLon?.lat) return;
+    const data = await getStoreListApi({
+      lat: latLon?.lat,
+      lon: latLon?.lon,
+      category: category || '',
+    });
+    if (data) setStoreList(data);
+  };
+
+  const debouncedFetch = useMemo(() => debounce(fetchData, 500), [category]);
+  useEffect(() => {
+    debouncedFetch(latLon);
+    return () => debouncedFetch.cancel();
   }, [category, latLon]);
 
-  // 3. 목록이 들어오면 첫번째로 setMapOptions해서 지도 그리기
   useEffect(() => {
     if (!storeList?.[0]) return;
     setMapOptions({
@@ -88,17 +93,25 @@ export default function Page() {
         onError={(err) => console.log(err)}
       />
       <Suspense fallback={<Spinner size={80} />}>
-        <MapTop setLatLon={setLatLon} kakaoMapRef={kakaoMapRef} />
-        <MapBox
-          kakaoMapRef={kakaoMapRef}
-          storeList={storeList}
-          mapOptions={mapOptions}
-          selectedStore={selectedStore}
-          setSelectedStore={setSelectedStore}
+        <SearchParamProvider
+          onParams={({ category, storeId }) => {
+            setCategory(category);
+            setStoreId(storeId);
+          }}
         />
-        {storeList && <MapBottomModal data={storeList} />}
-        <BottomNav />
+
+        <MapTop setLatLon={setLatLon} kakaoMapRef={kakaoMapRef} />
       </Suspense>
+      <MapBox
+        kakaoMapRef={kakaoMapRef}
+        storeList={storeList}
+        mapOptions={mapOptions}
+        selectedStore={selectedStore}
+        setSelectedStore={setSelectedStore}
+        setMapOptions={setMapOptions}
+      />
+      {storeList && <MapBottomModal data={storeList} />}
+      <BottomNav />
     </>
   );
 }
