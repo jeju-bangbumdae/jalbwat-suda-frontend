@@ -3,7 +3,7 @@ FROM node:18 AS builder
 
 # 앱 디렉토리 설정
 # 컨테이너 내부의 /app 디렉토리를 작업 디렉토리로 설정합니다.
-WORKDIR src/app
+WORKDIR /app
 
 COPY package*.json ./
 
@@ -25,10 +25,10 @@ FROM node:18-alpine
 
 # 앱 디렉토리 설정
 # 최종 애플리케이션의 작업 디렉토리를 /app으로 설정합니다.
-WORKDIR src/app
+WORKDIR /app
 
 # 1단계(builder)에서 빌드된 정적 파일들을 현재 작업 디렉토리(/app)로 복사합니다.
-COPY --from=builder src/app/build ./build
+COPY --from=builder /app/build ./build
 
 # 정적 파일 서버 설치
 # 'serve' 패키지를 전역으로 설치하여 빌드된 정적 파일을 서빙합니다.
