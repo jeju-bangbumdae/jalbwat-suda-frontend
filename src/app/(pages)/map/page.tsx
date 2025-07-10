@@ -1,64 +1,27 @@
 'use client';
-import Script from 'next/script';
-import { useEffect, useRef, useState } from 'react';
 
-const markerdata = [
+import { MapBox } from '@/components/map/MapBox/MapBox';
+import { MapTop } from '@/components/map/MapTop/MapTop';
+import { BottomNav } from '@/components/navigation/BottomNav';
+import { useSearchParams } from 'next/navigation';
+import Script from 'next/script';
+import { useState } from 'react';
+
+const data = [
   {
-    mapy: 33.5066211,
-    mapx: 126.49281,
-  },
-  {
-    mapy: 33.450705,
-    mapx: 126.570677,
-  },
-  {
-    mapy: 33.550705,
-    mapx: 126.670677,
+    name: '구름식당',
+    category: 'restaurant',
+    img: 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
+    address: '제주시 어쩌구 우동',
+    x: 33.45012664348227,
+    y: 126.91831460907449,
   },
 ];
 
 export default function Page() {
-  const mapContainerRef = useRef(null); // 지도를 담을 DOM
-  const kakaoMapRef = useRef<any>(null); // 지도 객체
-  const [mapOptions, setMapOptions] = useState({ center: [33.3606281, 126.5358345], level: 10 });
-
-  // 지도 그리기
-  const drawMap = () => {
-    const options = {
-      center: new window.kakao.maps.LatLng(...mapOptions.center),
-      level: mapOptions.level,
-    };
-
-    if (mapContainerRef.current)
-      kakaoMapRef.current = new window.kakao.maps.Map(mapContainerRef.current, options);
-
-    if (kakaoMapRef.current) {
-      const zoomControl = new window.kakao.maps.ZoomControl();
-      kakaoMapRef.current.addControl(zoomControl, window.kakao.maps.ControlPosition.RIGHT);
-    }
-  };
-
-  // 이미지 있는 마커 그리기
-  const displayMarker = () => {
-    if (kakaoMapRef.current)
-      markerdata.forEach((el) => {
-        console.log(window.kakao.maps);
-
-        // 마커의 이미지정보
-        const imageSrc = 'https://t1.daumcdn.net/localimg/localimages/07/mapapidoc/marker_red.png',
-          imageSize = new window.kakao.maps.Size(64, 69), // 마커이미지의 크기입니다
-          imageOption = { offset: new window.kakao.maps.Point(27, 69) }; // 마커이미지의 옵션입니다. 마커의 좌표와 일치시킬 이미지 안에서의 좌표를 설정합니다.
-
-        const markerImage = new window.kakao.maps.MarkerImage(imageSrc, imageSize, imageOption);
-        // 지도에 생성할 마커
-        const marker = new window.kakao.maps.Marker({
-          image: markerImage,
-          position: new window.kakao.maps.LatLng(el.mapy, el.mapx),
-        });
-
-        marker.setMap(kakaoMapRef.current);
-      });
-  };
+  const [selectedPin, setSelectedPin] = useState();
+  const searchParams = useSearchParams();
+  const [mapOptions, setMapOptions] = useState({ center: [33.3606281, 126.5358345], level: 10 }); //기본 제주도 중앙
 
   const onLoadKakaoAPI = async () => {
     window.kakao.maps.load(() => {
@@ -72,23 +35,30 @@ export default function Page() {
     });
   };
 
-  useEffect(() => {
-    if (!window.kakao) return;
-    drawMap();
-    displayMarker();
-  }, [mapOptions]);
+  // category, 현재 위치 사용해서 markerdata 보여주기
+  const reqData = {
+    x: mapOptions.center[0],
+    y: mapOptions.center[1],
+    category: searchParams.get('category'),
+  };
 
   return (
     <>
+      {/* category설정하기 */}
       <Script
         type="text/javascript"
         src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY}&libraries=services&autoload=false`}
         onLoad={onLoadKakaoAPI}
         onError={(err) => console.log(err)}
       />
-      <div>
-        <div ref={mapContainerRef} style={{ width: '100%', height: '400px' }} />
-      </div>
+      <MapTop />
+      <MapBox
+        markerdata={data}
+        mapOptions={mapOptions}
+        selectedPin={selectedPin}
+        setSelectedPin={setSelectedPin}
+      />
+      <BottomNav />
     </>
   );
 }
