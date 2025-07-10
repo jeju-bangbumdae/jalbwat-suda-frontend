@@ -38,8 +38,16 @@
   --vapor-color-gray-800: #2b2d36;
   --vapor-color-gray-900: #111111;
 
-  --vapor-color-black: #111111;
+	--vapor-color-black: #111111;
 
-  /* vapor background */
-  --vapor-color-background-primary: var(--color-primary-yellow);
+	/* vapor background */
+	--vapor-color-background-primary: var(--color-primary-yellow);
+
+	/* vapor foreground */
+	/* bottom nav primary color */
+	--vapor-color-foreground-primary: var(--color-primary-orange);
+
+	/* bottom nav default gray color */
+	--vapor-color-normal-lighter: var(--vapor-color-gray-400);
+
 }
