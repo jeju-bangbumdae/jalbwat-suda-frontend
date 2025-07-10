@@ -1,12 +1,14 @@
-'use client';
-import { MainSwiper } from '@/components/main/MainSwiper';
-import { BottomNav } from '@/components/navigation/BottomNav';
+
+import config from '@/lib/config';
+import HomePage from './(main)/home/HomePage';
 
 export default function Home() {
+
+  console.log(config.NEXT_PUBLIC_API_URL);
+  
   return (
     <>
-      <MainSwiper />
-      <BottomNav />
+    <HomePage baseURL={config.NEXT_PUBLIC_API_URL}/>
     </>
   );
 }

@@ -1,8 +1,9 @@
 import type { Metadata } from 'next';
-
+import config from '@/lib/config';
 import '../styles/font.css';
 import '../styles/color.css';
 import '@vapor-ui/core/styles.css';
+
 import StyledComponentsRegistry from '@/providers/StyledComponentsRegistry';
 import { GlobalStyle } from '@/styles/globalStyles';
 import { LayoutContainer } from '@/components/LayoutContainer';
@@ -14,6 +15,7 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  console.log('config:', config);
   return (
     <html lang="ko">
       <Script
