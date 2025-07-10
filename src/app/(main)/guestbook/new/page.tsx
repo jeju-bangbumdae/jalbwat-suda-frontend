@@ -33,7 +33,7 @@ export default function Page() {
       <TopBar isBack title={data?.name} call={data?.phone} operationTime={data?.operationTime} />
       <GuestbookForm>
         <Text typography="heading4" asChild>
-          <h3>방명록 남기기</h3>
+          <h3 style={{color: "var(--color-gray-900)"}}>방명록 남기기</h3>
         </Text>
         <CustomTextField
           label={

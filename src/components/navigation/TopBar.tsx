@@ -1,5 +1,5 @@
 'use client';
-import { Text } from '@vapor-ui/core';
+import { Button, Text } from '@vapor-ui/core';
 import styled from 'styled-components';
 import BackButton from '../buttons/BackButton';
 import Image from 'next/image';
@@ -9,9 +9,10 @@ interface Props {
   title?: string;
   call?: string;
   operationTime?: string;
+  hasMapBtn?: boolean;
 }
 
-const TopBar = ({ isBack = false, title = '', call, operationTime }: Props) => {
+const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = false }: Props) => {
   return (
     <Container>
       {isBack && <BackButton />}
@@ -36,6 +37,15 @@ const TopBar = ({ isBack = false, title = '', call, operationTime }: Props) => {
           </dt>
           <dd>{call}</dd>
         </InfoDl>
+        {hasMapBtn && <><MapButton
+          size="md"
+          color="contrast"
+          variant={'outline'}
+        >
+          {"지도 보기"}
+        </MapButton>
+          <div style={{ paddingBottom: "60px" }}></div>
+        </>}
       </MainTitlePart>
     </Container>
   );
@@ -93,4 +103,12 @@ const InfoDl = styled.dl`
   &:last-child {
     margin-bottom: 74px;
   }
+`;
+
+const MapButton = styled(Button)`
+  padding: 0 20px;
+  border-radius: 20px;
+  background-color: white;
+  border: 1px solid var(--color-gray-900);
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 `;
