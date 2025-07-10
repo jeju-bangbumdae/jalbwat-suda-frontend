@@ -81,7 +81,7 @@ export default function Page() {
         onLoad={onLoadKakaoAPI}
         onError={(err) => console.log(err)}
       />
-      <Suspense fallback={<Spinner size={200} />}>
+      <Suspense fallback={<Spinner size={80} />}>
         <MapTop />
 
         <MapBox
