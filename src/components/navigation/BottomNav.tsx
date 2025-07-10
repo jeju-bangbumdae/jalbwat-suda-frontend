@@ -3,8 +3,10 @@
 import styled from 'styled-components';
 import { Text } from '@vapor-ui/core';
 import { usePathname } from 'next/navigation';
-import MapIcon from '../icons/MapIcon';
 import { useRouter } from 'next/navigation';
+import HomeIcon from '../icons/nav/HomeIcon';
+import BookIcon from '../icons/nav/BookIcon';
+import ProfileIcon from '../icons/nav/ProfileIcon';
 
 export const BottomNav = () => {
 	const pathname = usePathname();
@@ -16,32 +18,35 @@ export const BottomNav = () => {
 		{
 			href: '/',
 			label: '홈',
-			icon: <MapIcon color={isActive('/') ? '#0000ff' : '#000'} />,
+			icon: <HomeIcon color={isActive('/') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />,
 		},
 		{
-			href: '/map',
-			label: '지도',
-			icon: <MapIcon color={isActive('/map') ? '#0000ff' : '#000'} />,
+			href: '/guestbook',
+			label: '방명록',
+			icon: <BookIcon color={isActive('/guestbook') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />,
 		},
 		{
 			href: '/mypage',
 			label: '내정보',
-			icon: <MapIcon color={isActive('/mypage') ? '#0000ff' : '#000'} />,
+			icon: <ProfileIcon color={isActive('/mypage') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />,
 		},
 	];
 
 	return (
 		<NavWrapper>
-			<NavContainer>
+			{/* <NavContainer> */}
 				{navItems.map(({ href, label, icon }) => (
 					<NavItem key={href} onClick={() => {
 						router.push(href)
 					}}>
 						{icon}
-						<Text foreground={isActive(href) ? 'primary' : 'normal'}>{label}</Text>
+						<Text aria-setsize={14} style={{
+							color: isActive(href) ? 'var(--color-primary-orange)' : 'var(--color-gray-500)',
+							fontWeight: isActive(href) ? '600' : 'normal'
+						}}>{label}</Text>
 					</NavItem>
 				))}
-			</NavContainer>
+			{/* </NavContainer> */}
 		</NavWrapper >
 	);
 };
@@ -54,28 +59,30 @@ const NavWrapper = styled.nav`
   left: 50%;
   transform: translateX(-50%);
   background: white;
+  box-shadow: 0 -6px 12px rgba(141, 115, 88, 0.1);
+
   display: flex;
   justify-content: space-around;
-  padding: 10px 20px;
+  padding: 20px;
   z-index: 100;
 `;
 
-const NavContainer = styled.div`
-	background: #eee;
-	border: 1px solid #000;
-	border-radius: 50px;
-	padding: 20px;
-	width: 100%;
-	height: 100%;
-	display: flex;
-`;
+// const NavContainer = styled.div`
+// 	background: #eee;
+// 	border: 1px solid #000;
+// 	border-radius: 50px;
+// 	padding: 20px;
+// 	width: 100%;
+// 	height: 100%;
+// 	display: flex;
+// `;
 
 const NavItem = styled.div`
 	display: flex;
 	width: 100%;
 	flex-direction: column;
 	width: 100%;
-	gap: 4px;
+	gap: 8px;
 	
 	justify-content: center;
 	align-items: center;
