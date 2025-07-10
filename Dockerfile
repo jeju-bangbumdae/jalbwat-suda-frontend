@@ -13,7 +13,7 @@ RUN npm install
 
 # 전체 앱 소스 복사
 # 'jalbwat-suda-frontend' 폴더의 나머지 모든 파일들을 현재 작업 디렉토리(/app)로 복사합니다.
-# COPY / .
+COPY . . 
 
 # 앱 빌드
 # React 애플리케이션을 빌드하여 정적 파일(HTML, CSS, JS)을 'build' 디렉토리에 생성합니다.
