@@ -28,8 +28,8 @@ export const MainSwiper = () => {
       <h1>
         <Image src={'/images/logo.svg'} width={110} height={74} alt="잘봤수다 로고" />
       </h1>
-      {!!guestbookList?.length && <Spinner size={150} color="var( --color-primary-orange)"  />}
-      {!guestbookList?.length && (
+
+      {!!guestbookList?.length ? (
         <SSwiper effect={'cards'} grabCursor={true} modules={[EffectCards]}>
           {guestbookList?.map((el, idx) => {
             return (
@@ -72,6 +72,11 @@ export const MainSwiper = () => {
             );
           })}
         </SSwiper>
+      ) : (
+        <>
+          <Spinner size={150} color="var( --color-primary-orange)" />
+          <div style={{ height: '360px' }} />
+        </>
       )}
     </Background>
   );

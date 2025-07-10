@@ -1,35 +1,55 @@
 'use client';
+import { getRandomQuestionApi } from '@/api/getRandomQuestionApi';
+import { getStoreApi } from '@/api/getStoreApi';
+import { postGuestbookApi } from '@/api/postGuestbookApi';
 import { BottomButton } from '@/components/buttons/BottomButton';
 import CustomTextArea from '@/components/common/Fields/CustomTextArea';
 import CustomTextField from '@/components/common/Fields/CustomTextField';
 import TopBar from '@/components/navigation/TopBar';
 import { Text } from '@vapor-ui/core';
-import { useState } from 'react';
+import { useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const data: StoreType = {
-  id: 2355,
-  name: '구름식당',
-  category: 'restaurant',
-  address: '제주시 어쩌구 우동',
-  operationTime: '월~금 09:00~24:00',
-  phone: '010-3333-3333',
-  guestBookCount: 10,
-  lat: '33.45012664348227',
-  lon: '126.91831460907449',
-};
-
+// storeId 서치파람 필수값
 export default function Page() {
-  const [question, setQuestion] = useState<string>('');
+  const [storeInfo, setStoreInfo] = useState<StoreType & { question: QuestionType }>();
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const storeId = searchParams.get('storeId');
+  const [answer, setAnswer] = useState<string>('');
   const [content, setContent] = useState<string>('');
 
-  const handleSubmit = (e) => {
+  useEffect(() => {
+    if (!storeId) return;
+    const fetchData = async () => {
+      const quesitonData = await getRandomQuestionApi();
+      const storeData = await getStoreApi({ storeId: +storeId });
+      if (storeData && quesitonData) setStoreInfo({ ...storeData, question: quesitonData });
+    };
+    fetchData();
+  }, [storeId]);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    if (!storeId) return;
+    const data = await postGuestbookApi({
+      answer,
+      content,
+      questionId: Number(storeInfo?.question?.id),
+      storeId: +storeId,
+    });
+    if (data) router.push('/guestbook/new/success');
   };
 
   return (
     <>
-      <TopBar isBack title={data?.name} call={data?.phone} operationTime={data?.operationTime} />
+      <TopBar
+        isBack
+        title={storeInfo?.name}
+        call={storeInfo?.phone}
+        operationTime={storeInfo?.operationTime}
+      />
       <GuestbookForm>
         <Text typography="heading4" asChild>
           <h3 style={{ color: 'var(--color-gray-900)' }}>방명록 남기기</h3>
@@ -38,11 +58,12 @@ export default function Page() {
           label={
             <LabelBox>
               <span>Q</span>
-              랜덤으로 들어오는 질문 1개
+              {storeInfo?.question?.question}
             </LabelBox>
           }
-          value={question}
-          onChange={(value) => setQuestion(value)}
+          value={answer}
+          placeholder={storeInfo?.question?.question}
+          onChange={(value) => setAnswer(value)}
         />
         <CustomTextArea
           label={
@@ -57,7 +78,7 @@ export default function Page() {
           onChange={(value) => setContent(value)}
         />
         <BottomButton
-          disabled={!question || content?.length < 30}
+          disabled={!answer || content?.length < 30}
           onClick={handleSubmit}
           fromBottom={'0'}
         >

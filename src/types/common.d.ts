@@ -41,3 +41,8 @@ type GuestBookType = {
     name: string;
   };
 };
+
+type QuestionType = {
+  id: number;
+  question: string;
+};

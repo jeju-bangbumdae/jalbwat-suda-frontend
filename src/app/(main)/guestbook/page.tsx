@@ -1,18 +1,17 @@
 'use client';
-
+import debounce from 'lodash.debounce';
 import { MapTop } from '@/components/map/MapTop';
 import { MapBox } from '@/components/map/MapBox';
 import { MapBottomModal } from '@/components/map/MapBottomModal';
 
-import { useRouter, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Script from 'next/script';
-import { Suspense, useEffect, useRef, useState } from 'react';
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react';
 import { BottomNav } from '@/components/navigation/BottomNav';
 import { Spinner } from '@/components/common/Spinner/Spinner';
 import { getStoreListApi } from '@/api/getStoreListApi';
 import { getStoreApi } from '@/api/getStoreApi';
 
-// const storeList: StoreType[] = [
 //   {
 //     id: 2355,
 //     name: '구름식당',
@@ -31,7 +30,6 @@ export default function Page() {
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
   const storeId = searchParams.get('storeId');
-  const router = useRouter();
   const [mapOptions, setMapOptions] = useState<MapOptionsType>();
   const [latLon, setLatLon] = useState<LatLonType>();
   const [storeList, setStoreList] = useState<StoreType[]>([]);
@@ -43,6 +41,7 @@ export default function Page() {
 
     window.kakao.maps.load(() => {
       console.log('env!! - in load : ', process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
+      if (storeId) return;
       const getGeoSuccess = (event) => {
         setLatLon({
           lat: event.coords.latitude,
@@ -73,24 +72,31 @@ export default function Page() {
           center: [+data.lat, +data.lon],
           level: 5,
         });
-        router.replace('/guestbook');
       }
     };
     fetchData();
   }, [storeId]);
 
   // 2. latLon, category이 바뀔때 목록 불러오기
-  useEffect(() => {
+  const fetchData = async (latLon) => {
+    console.log(latLon);
     if (!latLon?.lat) return;
-    const fetchData = async () => {
-      const data = await getStoreListApi({
-        lat: latLon?.lat,
-        lon: latLon?.lon,
-        category: category || '',
-      });
-      if (data) setStoreList(data);
-    };
-    fetchData();
+    const data = await getStoreListApi({
+      lat: latLon?.lat,
+      lon: latLon?.lon,
+      category: category || '',
+    });
+    if (data) setStoreList(data);
+  };
+  const debouncedFetch = useMemo(
+    () => debounce(fetchData, 500),
+    [category] // ← category도 dependency에 넣는 게 좋아요
+  );
+  useEffect(() => {
+    console.log(category, 'category');
+    console.log(latLon, 'latLon');
+    debouncedFetch(latLon);
+    return () => debouncedFetch.cancel();
   }, [category, latLon]);
 
   // 3. 목록이 들어오면 첫번째로 setMapOptions해서 지도 그리기

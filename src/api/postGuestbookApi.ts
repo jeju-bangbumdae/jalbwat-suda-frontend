@@ -1,18 +1,18 @@
-import { tokenInstance } from './axios';
+import { baseInstance } from './axios';
 
 type Props = {
-  question: string;
+  answer: string;
   content: string;
   questionId: number;
+  storeId: number;
 };
 
 export const postGuestbookApi = async (requestData: Props) => {
   try {
-    const response = await tokenInstance.post('/api/v1/guestbook', requestData);
+    const response = await baseInstance.post('/api/v1/guest-books', requestData);
     const data = await response.data;
     console.log(data, 'data');
-    localStorage.setItem('token', data?.token);
-    return data?.token;
+    return data;
   } catch (error: any) {
     console.error(error);
   }
