@@ -1,12 +1,14 @@
 # 1단계: 빌드 스테이지 (Node.js 환경에서 애플리케이션 빌드)
 FROM node:18 AS builder
 
+ARG NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
+ENV NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY=$NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
+
 # 앱 디렉토리 설정
 # 컨테이너 내부의 /app 디렉토리를 작업 디렉토리로 설정합니다.
 WORKDIR /app
 
 COPY package*.json ./
-
 # 의존성 설치
 # package.json에 정의된 모든 Node.js 의존성을 설치합니다.
 RUN npm install
