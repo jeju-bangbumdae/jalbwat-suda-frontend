@@ -1,8 +1,9 @@
 'use client';
-import { Button, Text } from '@vapor-ui/core';
+import { Button, IconButton, Text } from '@vapor-ui/core';
 import styled from 'styled-components';
 import BackButton from '../buttons/BackButton';
 import Image from 'next/image';
+import SettingIcon from '../icons/SettingIcon';
 import { useParams, useRouter } from 'next/navigation';
 
 interface Props {
@@ -11,9 +12,11 @@ interface Props {
   call?: string;
   operationTime?: string;
   hasMapBtn?: boolean;
+  hasSetting?: boolean;
+  height?: string;
 }
 
-const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = false }: Props) => {
+const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = false, hasSetting = false, height }: Props) => {
   const { id } = useParams();
   const router = useRouter();
   const handleClickMapBtn = () => {
@@ -21,18 +24,19 @@ const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = f
   };
 
   return (
-    <Container>
-      {isBack && <BackButton />}
+    <Container $height={height}>
+      {isBack && <div style={{position: "absolute", left: "20px"}}><BackButton />
+      </div>}
       <MainTitlePart>
         <Title>{title || '로딩 중'}</Title>
-        <InfoDl>
+        {!!operationTime && <InfoDl>
           <dt>
             <Image src={'/images/time.svg'} className="time" width={13} height={13} alt={'시간'} />
             영업시간
           </dt>
           <dd>{operationTime || '-'}</dd>
-        </InfoDl>
-        <InfoDl>
+        </InfoDl>}
+        {!!call && <InfoDl>
           <dt>
             <Image
               src={'/images/call.svg'}
@@ -43,7 +47,7 @@ const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = f
             />
           </dt>
           <dd>{call || '-'}</dd>
-        </InfoDl>
+        </InfoDl>}
         {hasMapBtn && (
           <>
             <MapButton size="md" color="contrast" variant={'outline'} onClick={handleClickMapBtn}>
@@ -53,6 +57,14 @@ const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = f
           </>
         )}
       </MainTitlePart>
+      {hasSetting && <IconButton
+        className='tail'
+        aria-label="설정"
+        variant="ghost"
+        style={{ position: 'absolute', right: '20px', top: '23px' }} // 직접 위치 지정
+      >
+        <SettingIcon />
+      </IconButton>}
     </Container>
   );
 };
@@ -61,17 +73,14 @@ export default TopBar;
 
 // 스타일 정의
 
-const Container = styled.div`
+const Container = styled.div<{ $height?: string }>`
   text-align: center;
   position: relative;
   width: 100%;
   padding-top: 23px;
   background-image: linear-gradient(#fff0c5, #eea14e);
 
-  & > button {
-    left: 20px;
-    position: absolute;
-  }
+  height: ${props => props.$height ?? "auto"};
 `;
 
 const MainTitlePart = styled.div`
