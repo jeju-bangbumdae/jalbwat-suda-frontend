@@ -6,6 +6,7 @@ import { useState } from "react";
 
 export default function Page() {
 	const [input, setInput] = useState<string>("");
+	
 	return (
 		<>
 			<TopBar isBack title={"여기 가게 제목"} />
