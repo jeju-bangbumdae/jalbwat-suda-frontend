@@ -28,7 +28,7 @@ FROM node:18-alpine
 WORKDIR src/app
 
 # 1단계(builder)에서 빌드된 정적 파일들을 현재 작업 디렉토리(/app)로 복사합니다.
-COPY --from=builder src/app/build ./build
+COPY --from=builder app/build ./build
 
 # 정적 파일 서버 설치
 # 'serve' 패키지를 전역으로 설치하여 빌드된 정적 파일을 서빙합니다.
