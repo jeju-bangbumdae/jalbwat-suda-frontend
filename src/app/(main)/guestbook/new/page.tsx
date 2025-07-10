@@ -1,90 +1,93 @@
 'use client';
+
+import { Suspense, useState } from 'react';
 import { getRandomQuestionApi } from '@/api/getRandomQuestionApi';
 import { getStoreApi } from '@/api/getStoreApi';
 import { postGuestbookApi } from '@/api/postGuestbookApi';
+import { useRouter } from 'next/navigation';
+import { Spinner } from '@/components/common/Spinner/Spinner';
+import TopBar from '@/components/navigation/TopBar';
+import styled from 'styled-components';
 import { BottomButton } from '@/components/buttons/BottomButton';
 import CustomTextArea from '@/components/common/Fields/CustomTextArea';
 import CustomTextField from '@/components/common/Fields/CustomTextField';
-import TopBar from '@/components/navigation/TopBar';
 import { Text } from '@vapor-ui/core';
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
+import SearchParamWrapper from './SearchParamWrapper';
 
-// storeId 서치파람 필수값
 export default function Page() {
   const [storeInfo, setStoreInfo] = useState<StoreType & { question: QuestionType }>();
+  const [answer, setAnswer] = useState('');
+  const [content, setContent] = useState('');
   const router = useRouter();
-  const searchParams = useSearchParams();
-  const storeId = searchParams.get('storeId');
-  const [answer, setAnswer] = useState<string>('');
-  const [content, setContent] = useState<string>('');
 
-  useEffect(() => {
-    if (!storeId) return;
-    const fetchData = async () => {
-      const quesitonData = await getRandomQuestionApi();
-      const storeData = await getStoreApi({ storeId: +storeId });
-      if (storeData && quesitonData) setStoreInfo({ ...storeData, question: quesitonData });
-    };
-    fetchData();
-  }, [storeId]);
+  const handleFetch = async (storeId: string) => {
+    const quesitonData = await getRandomQuestionApi();
+    const storeData = await getStoreApi({ storeId: +storeId });
+    if (storeData && quesitonData) setStoreInfo({ ...storeData, question: quesitonData });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!storeId) return;
     const data = await postGuestbookApi({
       answer,
       content,
       questionId: Number(storeInfo?.question?.id),
-      storeId: +storeId,
+      storeId: storeInfo?.id ?? 0,
     });
     if (data) router.push('/guestbook/new/success');
   };
 
   return (
     <>
-      <TopBar
-        isBack
-        title={storeInfo?.name}
-        call={storeInfo?.phone}
-        operationTime={storeInfo?.operationTime}
-      />
-      <GuestbookForm>
-        <Text typography="heading4" asChild>
-          <h3 style={{ color: 'var(--color-gray-900)' }}>방명록 남기기</h3>
-        </Text>
-        <CustomTextField
-          label={
-            <LabelBox>
-              <span>Q</span>
-              {storeInfo?.question?.question}
-            </LabelBox>
-          }
-          value={answer}
-          placeholder={storeInfo?.question?.question}
-          onChange={(value) => setAnswer(value)}
-        />
-        <CustomTextArea
-          label={
-            <LabelBox>
-              <span>Q</span>
-              방명록을 적어주세요. (30자 이상)
-            </LabelBox>
-          }
-          id={'content'}
-          placeholder="30자 이상 작성해주세요."
-          value={content}
-          onChange={(value) => setContent(value)}
-        />
-        <BottomButton
-          disabled={!answer || content?.length < 30}
-          onClick={handleSubmit}
-          fromBottom={'0'}
-        >
-          확인
-        </BottomButton>
-      </GuestbookForm>
+      <Suspense fallback={<Spinner size={80} />}>
+        <SearchParamWrapper onFetch={handleFetch} />
+      </Suspense>
+
+      {storeInfo && (
+        <>
+          <TopBar
+            isBack
+            title={storeInfo?.name}
+            call={storeInfo?.phone}
+            operationTime={storeInfo?.operationTime}
+          />
+          <GuestbookForm>
+            <Text typography="heading4" asChild>
+              <h3 style={{ color: 'var(--color-gray-900)' }}>방명록 남기기</h3>
+            </Text>
+            <CustomTextField
+              label={
+                <LabelBox>
+                  <span>Q</span>
+                  {storeInfo?.question?.question}
+                </LabelBox>
+              }
+              value={answer}
+              placeholder={storeInfo?.question?.question}
+              onChange={(value) => setAnswer(value)}
+            />
+            <CustomTextArea
+              label={
+                <LabelBox>
+                  <span>Q</span>
+                  방명록을 적어주세요. (30자 이상)
+                </LabelBox>
+              }
+              id={'content'}
+              placeholder="30자 이상 작성해주세요."
+              value={content}
+              onChange={(value) => setContent(value)}
+            />
+            <BottomButton
+              disabled={!answer || content?.length < 30}
+              onClick={handleSubmit}
+              fromBottom={'0'}
+            >
+              확인
+            </BottomButton>
+          </GuestbookForm>
+        </>
+      )}
     </>
   );
 }
