@@ -1,32 +1,47 @@
 'use client';
+import { getGuestBooksByStoreApi } from '@/api/getGuestBooksByStoreApi';
+import { getStoreApi } from '@/api/getStoreApi';
+import { Spinner } from '@/components/common/Spinner/Spinner';
 import GuestBookList from '@/components/guestbook/GuestBookList';
 import TopBar from '@/components/navigation/TopBar';
-import { GuestBookResponse } from '@/types/dto/GuestBook';
+
 import { Text } from '@vapor-ui/core';
+import { useParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
-const data: StoreType = {
-  id: 2355,
-  name: '구름식당',
-  category: 'restaurant',
-  address: '제주시 어쩌구 우동',
-  operationTime: '월~금 09:00~24:00',
-  phone: '010-3333-3333',
-  guestBookCount: 10,
-  lat: '33.45012664348227',
-  lon: '126.91831460907449',
+type StoreInfoType = {
+  store: StoreType | undefined;
+  guestbookList: GuestBookType[] | undefined;
 };
 
-const guestBookData: GuestBookResponse[] = Array.from({ length: 20 }).map((_, i) => ({
-  id: i + 1,
-  content: `방명록 내용 ${i + 1}`,
-}));
-
 export default function Page() {
+  const { id } = useParams();
+  const [storeInfo, setStoreInfo] = useState<StoreInfoType>();
+
+  useEffect(() => {
+    if (!id) return;
+    const fetchData = async () => {
+      const guestbookData = await getGuestBooksByStoreApi({ storeId: +id });
+      const storeData = await getStoreApi({ storeId: +id });
+      if (guestbookData && storeData)
+        setStoreInfo({
+          store: storeData,
+          guestbookList: guestbookData,
+        });
+    };
+    fetchData();
+  }, [id]);
 
   return (
     <PageWrapper>
-      <TopBar isBack title={data.name} call={data.phone} operationTime={data.operationTime} hasMapBtn />
+      <TopBar
+        isBack
+        title={storeInfo?.store?.name}
+        call={storeInfo?.store?.phone}
+        operationTime={storeInfo?.store?.operationTime}
+        hasMapBtn
+      />
       <GuestbookModal>
         <TextContainer>
           <Text typography="heading5" asChild>
@@ -37,7 +52,11 @@ export default function Page() {
           </Text>
         </TextContainer>
         <ScrollArea>
-          <GuestBookList data={guestBookData} />
+          {storeInfo?.guestbookList ? (
+            <GuestBookList data={storeInfo?.guestbookList} />
+          ) : (
+            <Spinner size={100} color="gray" />
+          )}
         </ScrollArea>
       </GuestbookModal>
     </PageWrapper>
@@ -50,7 +69,6 @@ const PageWrapper = styled.div`
   flex-direction: column;
   background: var(--color-background);
 `;
-
 
 const TextContainer = styled.div`
   display: flex;
@@ -74,7 +92,6 @@ const GuestbookModal = styled.div`
 
   overflow-y: auto;
 `;
-
 
 const ScrollArea = styled.div`
   flex: 1;

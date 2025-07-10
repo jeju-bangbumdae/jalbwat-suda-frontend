@@ -25,7 +25,6 @@ export default function Page() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
   };
 
   return (
@@ -33,7 +32,7 @@ export default function Page() {
       <TopBar isBack title={data?.name} call={data?.phone} operationTime={data?.operationTime} />
       <GuestbookForm>
         <Text typography="heading4" asChild>
-          <h3 style={{color: "var(--color-gray-900)"}}>방명록 남기기</h3>
+          <h3 style={{ color: 'var(--color-gray-900)' }}>방명록 남기기</h3>
         </Text>
         <CustomTextField
           label={
@@ -75,7 +74,7 @@ const GuestbookForm = styled.form`
   border-radius: 20px 20px 0 0;
   background-color: var(--color-white);
   box-shadow: 0 -4px 4px 0 rgba(0, 0, 0, 0.08);
-  padding: 40px 20px 0;
+  padding: 60px 20px 0;
 
   display: flex;
   flex-direction: column;

@@ -14,6 +14,7 @@ type StoreType = {
   phone: string;
   guestBookCount: number;
 };
+
 type MapOptionsType = {
   center: number[];
   level: number;

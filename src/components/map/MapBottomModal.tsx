@@ -19,7 +19,7 @@ export const MapBottomModal = ({ data }) => {
                   src={`/images/${el.category}.svg`}
                 >
                   <Avatar.Image />
-                  <Avatar.Fallback>{el?.name?.[0]}</Avatar.Fallback>
+                  <Avatar.Fallback>{el?.category?.[0]}</Avatar.Fallback>
                 </Avatar.Root>
                 <div>
                   <Text asChild typography="heading5">
@@ -47,7 +47,8 @@ const PlaceItem = styled.li`
     justify-content: space-between;
     align-items: center;
     padding-right: 10px;
-    padding-bottom: 16px;
+    padding-bottom: 12px;
+    margin-bottom: 12px;
     border-bottom: 1px solid var(--vapor-color-gray-300);
 
     & > div {

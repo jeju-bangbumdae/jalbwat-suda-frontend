@@ -9,7 +9,9 @@ type Props = {
 export const getStoreListApi = async (requestData: Props) => {
   try {
     const response = await baseInstance.get(
-      `/api/v1/stores?lat=${requestData?.lat}&lon=${requestData?.lon}&category=${requestData?.category}`
+      `/api/v1/stores?lat=${requestData?.lat}&lon=${requestData?.lon}${
+        requestData?.category ? `&category=${requestData?.category}` : ''
+      }`
     );
     const data = await response.data;
     console.log(data, 'data');

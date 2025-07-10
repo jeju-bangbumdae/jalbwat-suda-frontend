@@ -1,8 +1,8 @@
-"use client";
+'use client';
 
-import { Card, Text } from "@vapor-ui/core";
-import { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import { Card, Text } from '@vapor-ui/core';
+import { useEffect, useRef, useState } from 'react';
+import styled from 'styled-components';
 
 interface Props {
   content: string;
@@ -27,15 +27,13 @@ const GuestBookListItem = ({ content }: Props) => {
   }, [content]);
 
   return (
-    <Card.Root style={{borderColor: "var(--color-gray-900)"}}>
+    <Card.Root style={{ borderColor: 'var(--color-gray-900)' }}>
       <CustomBody>
         <ContentText ref={contentRef} $isMore={isMore}>
           {content}
         </ContentText>
         {isOverflowed && (
-          <UnderLineBtn onClick={() => setMore(!isMore)}>
-            {isMore ? "닫기" : "더보기"}
-          </UnderLineBtn>
+          <UnderLineBtn onClick={() => setMore(!isMore)}>{isMore ? '닫기' : '더보기'}</UnderLineBtn>
         )}
       </CustomBody>
     </Card.Root>
@@ -57,10 +55,10 @@ const ContentText = styled.div<{ $isMore: boolean }>`
 
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: ${({ $isMore }) => ($isMore ? "none" : 3)};
+  -webkit-line-clamp: ${({ $isMore }) => ($isMore ? 'none' : 3)};
   overflow: hidden;
   white-space: pre-line;
-  word-break: break-word;
+  word-break: break-all;
 `;
 
 const UnderLineBtn = styled(Text)`

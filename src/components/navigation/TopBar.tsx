@@ -3,6 +3,7 @@ import { Button, Text } from '@vapor-ui/core';
 import styled from 'styled-components';
 import BackButton from '../buttons/BackButton';
 import Image from 'next/image';
+import { useParams, useRouter } from 'next/navigation';
 
 interface Props {
   isBack?: boolean;
@@ -13,17 +14,23 @@ interface Props {
 }
 
 const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = false }: Props) => {
+  const { id } = useParams();
+  const router = useRouter();
+  const handleClickMapBtn = () => {
+    router.push(`/guestbook?storeId=${id}`);
+  };
+
   return (
     <Container>
       {isBack && <BackButton />}
       <MainTitlePart>
-        <Title>{title}</Title>
+        <Title>{title || '로딩 중'}</Title>
         <InfoDl>
           <dt>
             <Image src={'/images/time.svg'} className="time" width={13} height={13} alt={'시간'} />
             영업시간
           </dt>
-          <dd>{operationTime}</dd>
+          <dd>{operationTime || '-'}</dd>
         </InfoDl>
         <InfoDl>
           <dt>
@@ -35,17 +42,16 @@ const TopBar = ({ isBack = false, title = '', call, operationTime, hasMapBtn = f
               className="callIcon"
             />
           </dt>
-          <dd>{call}</dd>
+          <dd>{call || '-'}</dd>
         </InfoDl>
-        {hasMapBtn && <><MapButton
-          size="md"
-          color="contrast"
-          variant={'outline'}
-        >
-          {"지도 보기"}
-        </MapButton>
-          <div style={{ paddingBottom: "60px" }}></div>
-        </>}
+        {hasMapBtn && (
+          <>
+            <MapButton size="md" color="contrast" variant={'outline'} onClick={handleClickMapBtn}>
+              {'지도 보기'}
+            </MapButton>
+            <div style={{ paddingBottom: '60px' }}></div>
+          </>
+        )}
       </MainTitlePart>
     </Container>
   );

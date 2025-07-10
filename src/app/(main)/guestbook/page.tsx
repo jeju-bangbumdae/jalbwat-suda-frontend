@@ -4,12 +4,13 @@ import { MapTop } from '@/components/map/MapTop';
 import { MapBox } from '@/components/map/MapBox';
 import { MapBottomModal } from '@/components/map/MapBottomModal';
 
-import { useSearchParams } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Script from 'next/script';
 import { Suspense, useEffect, useRef, useState } from 'react';
 import { BottomNav } from '@/components/navigation/BottomNav';
 import { Spinner } from '@/components/common/Spinner/Spinner';
 import { getStoreListApi } from '@/api/getStoreListApi';
+import { getStoreApi } from '@/api/getStoreApi';
 
 // const storeList: StoreType[] = [
 //   {
@@ -29,19 +30,21 @@ export default function Page() {
   const [selectedStore, setSelectedStore] = useState<StoreType>();
   const searchParams = useSearchParams();
   const category = searchParams.get('category');
+  const storeId = searchParams.get('storeId');
+  const router = useRouter();
   const [mapOptions, setMapOptions] = useState<MapOptionsType>();
   const [latLon, setLatLon] = useState<LatLonType>();
   const [storeList, setStoreList] = useState<StoreType[]>([]);
   const kakaoMapRef = useRef<any>(null); // 지도 객체
 
-  // 1. 현재 위치 파악 혹은 제주도 정중앙으로 latlon
+  // 1.-1 현재 위치 파악 혹은 제주도 정중앙으로 latlon (storeId가 없을때)
   const onLoadKakaoAPI = async () => {
+    if (!window.kakao) return;
+
     window.kakao.maps.load(() => {
       console.log('env!! - in load : ', process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
       const getGeoSuccess = (event) => {
         setLatLon({
-          // lat: '37.56',
-          // lon: '126.99',
           lat: event.coords.latitude,
           lon: event.coords.longitude,
         });
@@ -55,6 +58,26 @@ export default function Page() {
       window.navigator.geolocation.getCurrentPosition(getGeoSuccess, getGeoErr);
     });
   };
+  useEffect(() => {
+    if (!storeId) onLoadKakaoAPI();
+  }, []);
+
+  // 1-2. storeId가 있을 때는  storeList 1개만
+  useEffect(() => {
+    if (!storeId) return;
+    const fetchData = async () => {
+      const data = await getStoreApi({ storeId: +storeId });
+      if (data) {
+        setStoreList([data]);
+        setMapOptions({
+          center: [+data.lat, +data.lon],
+          level: 5,
+        });
+        router.replace('/guestbook');
+      }
+    };
+    fetchData();
+  }, [storeId]);
 
   // 2. latLon, category이 바뀔때 목록 불러오기
   useEffect(() => {
@@ -95,6 +118,7 @@ export default function Page() {
           mapOptions={mapOptions}
           selectedStore={selectedStore}
           setSelectedStore={setSelectedStore}
+          setMapOptions={setMapOptions}
         />
         {storeList && <MapBottomModal data={storeList} />}
         <BottomNav />
