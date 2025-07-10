@@ -21,14 +21,14 @@ type GuestBookType = {
   name: string;
   address: string;
   category: string;
-  question: {
+  qna?: {
     question: string;
     answer: string;
   };
   content: string;
   user: {
-    id: number;
-    actor: string;
+    id?: number;
+    actor?: string;
     name: string;
   };
 };

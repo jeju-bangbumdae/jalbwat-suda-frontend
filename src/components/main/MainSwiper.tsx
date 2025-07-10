@@ -8,45 +8,66 @@ import { Avatar, Text } from '@vapor-ui/core';
 import Link from 'next/link';
 import { CATEGORY_LIST } from '@/constant/commonConstant';
 import Image from 'next/image';
+// import { useEffect, useState } from 'react';
+// import { getRecentGuestbookApi } from '@/api/getRecentGuestbookApi';
 
-const data = [
+const guestbookList: GuestBookType[] = [
   {
     id: 2355,
-    store: '구름식당',
+    storeId: 2,
+    name: '구름식당',
     category: 'restaurant',
     address: '제주시 어쩌구',
-    guestBookAuthor: 'joo',
+    user: {
+      name: 'joo',
+    },
     content: `제주도는 많이 와봤는데 이 가게는 처음 가봤어요! 가게 음식 메뉴도 많고 현지인들과 함께 먹는게 정말 현지 식당에 온것 같아서 분위기가 좋았습니다.
 다음에도 가족과 함께 오고싶은 곳이에요. 서귀포시 근처에 있는 분들은 이 식당 꼭 한번 가보세요!`,
   },
   {
     id: 2355,
-    store: '구름식당',
+    storeId: 2,
+    name: '구름식당',
     category: 'restaurant',
     address: '제주시 어쩌구',
-    guestBookAuthor: 'joo',
+    user: {
+      name: 'joo',
+    },
     content: `제주도는 많이 와봤는데 이 가게는 처음 가봤어요! 가게 음식 메뉴도 많고 현지인들과 함께 먹는게 정말 현지 식당에 온것 같아서 분위기가 좋았습니다.
 다음에도 가족과 함께 오고싶은 곳이에요. 서귀포시 근처에 있는 분들은 이 식당 꼭 한번 가보세요!`,
   },
   {
     id: 2355,
-    store: '구름식당',
+    storeId: 2,
+    name: '구름식당',
     category: 'restaurant',
-    address: '제주시 어쩌구 안녕',
-    guestBookAuthor: 'joo',
+    address: '제주시 어쩌구',
+    user: {
+      name: 'joo',
+    },
     content: `제주도는 많이 와봤는데 이 가게는 처음 가봤어요! 가게 음식 메뉴도 많고 현지인들과 함께 먹는게 정말 현지 식당에 온것 같아서 분위기가 좋았습니다.
 다음에도 가족과 함께 오고싶은 곳이에요. 서귀포시 근처에 있는 분들은 이 식당 꼭 한번 가보세요!`,
   },
 ];
 
 export const MainSwiper = () => {
+  // const [guestbookList, setGuestbookList] = useState<GuestBookType | null>(null);
+
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const data = await getRecentGuestbookApi();
+  //     if (data) setGuestbookList(data);
+  //   };
+  //   fetchData();
+  // }, []);
+
   return (
     <Background>
       <h1>
         <Image src={'/images/logo.svg'} width={110} height={74} alt="잘봤수다 로고" />
       </h1>
       <SSwiper effect={'cards'} grabCursor={true} modules={[EffectCards]}>
-        {data?.map((el, idx) => {
+        {guestbookList?.map((el, idx) => {
           return (
             <SSwiperSlide key={idx}>
               <Link href={`/store/${el.id}`}>
@@ -55,17 +76,16 @@ export const MainSwiper = () => {
                     <Avatar.Root
                       size="xl"
                       shape="circle"
-                      alt={el?.store}
+                      alt={el?.name}
                       src={`/images/${el.category}.svg`}
-                      style={{ border: '1px solid black' }}
-                      // TODO: 디자이너분 여쭤보기 보더
+                      style={{ border: '1px solid var(--vapor-color-gray-500)' }}
                     >
                       <Avatar.Image />
-                      <Avatar.Fallback>{el?.store?.[0]}</Avatar.Fallback>
+                      <Avatar.Fallback>{el?.name?.[0]}</Avatar.Fallback>
                     </Avatar.Root>
                     <div>
                       <Text asChild typography="heading5">
-                        <h2>{el.store}</h2>
+                        <h2>{el.name}</h2>
                       </Text>
                       <Text asChild>
                         <address>
@@ -78,7 +98,7 @@ export const MainSwiper = () => {
 
                   <Text typography="body1" className="textContent">
                     <p>{el.content}</p>
-                    <span>From.{el.guestBookAuthor}</span>
+                    <span>From.{el.user?.name}</span>
                   </Text>
                 </SlideInner>
 
