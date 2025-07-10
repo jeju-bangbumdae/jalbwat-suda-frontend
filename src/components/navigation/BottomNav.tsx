@@ -9,51 +9,70 @@ import BookIcon from '../icons/nav/BookIcon';
 import ProfileIcon from '../icons/nav/ProfileIcon';
 
 export const BottomNav = () => {
-	const pathname = usePathname();
-	const router = useRouter();
+  const pathname = usePathname();
+  const router = useRouter();
 
-	const isActive = (href: string) => pathname === href;
+  const isActive = (href: string) => pathname === href;
 
-	const navItems = [
-		{
-			href: '/',
-			label: '홈',
-			icon: <HomeIcon color={isActive('/') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />,
-		},
-		{
-			href: '/guestbook',
-			label: '방명록',
-			icon: <BookIcon color={isActive('/guestbook') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />,
-		},
-		{
-			href: '/mypage',
-			label: '내정보',
-			icon: <ProfileIcon color={isActive('/mypage') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />,
-		},
-	];
+  const navItems = [
+    {
+      href: '/',
+      label: '홈',
+      icon: (
+        <HomeIcon color={isActive('/') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'} />
+      ),
+    },
+    {
+      href: '/guestbook',
+      label: '방명록',
+      icon: (
+        <BookIcon
+          color={isActive('/guestbook') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'}
+        />
+      ),
+    },
+    {
+      href: '/mypage',
+      label: '내정보',
+      icon: (
+        <ProfileIcon
+          color={isActive('/mypage') ? 'var(--color-primary-orange)' : 'var(--color-gray-500)'}
+        />
+      ),
+    },
+  ];
 
-	return (
-		<NavWrapper>
-			{/* <NavContainer> */}
-				{navItems.map(({ href, label, icon }) => (
-					<NavItem key={href} onClick={() => {
-						router.push(href)
-					}}>
-						{icon}
-						<Text aria-setsize={14} style={{
-							color: isActive(href) ? 'var(--color-primary-orange)' : 'var(--color-gray-500)',
-							fontWeight: isActive(href) ? '600' : 'normal'
-						}}>{label}</Text>
-					</NavItem>
-				))}
-			{/* </NavContainer> */}
-		</NavWrapper >
-	);
+  return (
+    <NavWrapper>
+      {/* <NavContainer> */}
+      {navItems.map(({ href, label, icon }) => (
+        <NavItem
+          key={href}
+          onClick={() => {
+            router.push(href);
+          }}
+        >
+          {icon}
+          <Text
+            aria-setsize={14}
+            style={{
+              color: isActive(href) ? 'var(--color-primary-orange)' : 'var(--color-gray-500)',
+              fontWeight: isActive(href) ? '600' : 'normal',
+            }}
+          >
+            {label}
+          </Text>
+        </NavItem>
+      ))}
+      {/* </NavContainer> */}
+    </NavWrapper>
+  );
 };
 
 const NavWrapper = styled.nav`
   position: fixed;
   bottom: 0;
+
   width: 100%;
   max-width: 500px;
   left: 50%;
@@ -64,7 +83,7 @@ const NavWrapper = styled.nav`
   display: flex;
   justify-content: space-around;
   padding: 20px;
-  z-index: 100;
+  z-index: 10000; //하단모달과 zIndex 차이줌
 `;
 
 // const NavContainer = styled.div`
@@ -78,12 +97,13 @@ const NavWrapper = styled.nav`
 // `;
 
 const NavItem = styled.div`
-	display: flex;
-	width: 100%;
-	flex-direction: column;
-	width: 100%;
-	gap: 8px;
-	
-	justify-content: center;
-	align-items: center;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  width: 100%;
+  gap: 8px;
+  cursor: pointer;
+
+  justify-content: center;
+  align-items: center;
 `;
