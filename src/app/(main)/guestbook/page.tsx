@@ -38,6 +38,7 @@ export default function Page() {
   // 이미 한번 실행된거라 뒤로가기 하면 이건 실행안된다.. 걍 기본 제주도 중앙으로 들어옴( 근데 어짜피 데이터  현재 좌표 기준으로 들어올거 같아서 괜춘~~)
   const onLoadKakaoAPI = async () => {
     window.kakao.maps.load(() => {
+      console.log("env!! - in load : ", process.env.NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY);
       const getGeoSuccess = (event) => {
         setMapOptions({
           center: [event.coords.latitude, event.coords.longitude],
@@ -71,6 +72,7 @@ export default function Page() {
   //     level: 5,
   //   });
   // }, [reqData?.[0]?.x]);
+
 
   return (
     <>

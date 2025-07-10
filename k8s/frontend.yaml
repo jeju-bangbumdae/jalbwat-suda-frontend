@@ -14,9 +14,15 @@ spec:
     spec:
       containers:
       - name: frontend
-        image: 837126493345.dkr.ecr.ap-northeast-2.amazonaws.com/team3/frontend:20
+        image: 837126493345.dkr.ecr.ap-northeast-2.amazonaws.com/team3/frontend:35
         ports:
         - containerPort: 3000
+        env:
+          - name: NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
+            valueFrom:
+              configMapKeyRef:
+                name: kakao-config
+                key: NEXT_PUBLIC_KAKAO_JAVASCRIPT_KEY
         volumeMounts:
         - name: config-volume
           mountPath: /app/config
