@@ -8,12 +8,18 @@ export const MapBox = ({ markerdata, mapOptions, selectedPin, setSelectedPin }) 
   // 지도 그리기
   const drawMap = () => {
     if (!window?.kakao?.maps) return;
+
+    const center = mapOptions?.center ?? [33.45012664348227, 126.91831460907449]; // 없으면 기본값
+    const level = mapOptions?.level ?? 3;
+
     const options = {
-      center: new window.kakao.maps.LatLng(...mapOptions?.center),
-      level: mapOptions?.level,
+      center: new window.kakao.maps.LatLng(...center),
+      level: level,
     };
-    if (mapContainerRef.current)
+
+    if (mapContainerRef.current) {
       kakaoMapRef.current = new window.kakao.maps.Map(mapContainerRef.current, options);
+    }
   };
 
   // 이미지 있는 마커 그리기
