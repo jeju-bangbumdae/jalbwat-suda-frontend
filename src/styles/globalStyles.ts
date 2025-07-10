@@ -30,4 +30,7 @@ export const GlobalStyle = createGlobalStyle`
 address{
   font-style: normal;
 }
+fieldset{
+  border-width:0px  !important;
+}
 `;

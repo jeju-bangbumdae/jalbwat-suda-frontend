@@ -12,10 +12,11 @@ interface Props {
   rows?: number;
   minLength?: number;
   maxLength?: number;
+  id?: string;
 }
 
 const CustomTextArea = ({
-  rows,
+  rows = 6,
   label,
   value,
   placeholder = '',
@@ -24,6 +25,7 @@ const CustomTextArea = ({
   onChange,
   minLength = 30,
   maxLength = 300,
+  id,
 }: Props) => {
   return (
     <TextAreaContainer>
@@ -33,6 +35,7 @@ const CustomTextArea = ({
         placeholder={placeholder}
         disabled={disabled}
         rows={rows}
+        id={id}
         minLength={minLength}
         maxLength={maxLength}
         onChange={(e) => onChange(e.target.value)}
@@ -44,20 +47,33 @@ const CustomTextArea = ({
   );
 };
 
-const TextAreaContainer = styled.div`
+const TextAreaContainer = styled.fieldset`
+  position: relative;
   align-items: flex-start;
   gap: var(--vapor-size-space-100);
   flex-direction: column;
   width: 100%;
   display: flex;
+
+  & > span {
+    position: absolute;
+    bottom: 16px;
+    right: 20px;
+    font-size: 14px;
+  }
 `;
 
 const CustomInputField = styled.textarea`
   width: 100%;
-  border-width: 1px;
-  border-color: var(--vapor-color-gray-900);
-
+  height: 300px;
+  border-radius: var(--vapor-size-borderRadius-300);
+  border: 1px solid var(--vapor-color-gray-900);
+  padding: var(--vapor-size-space-200);
+  transition: border-color 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+  resize: none;
+  font-size: 14px;
   &:focus-visible {
+    outline: unset;
     border-color: var(--vapor-color-border-primary);
   }
 `;
