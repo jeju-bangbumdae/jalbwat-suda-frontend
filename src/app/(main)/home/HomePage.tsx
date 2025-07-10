@@ -4,9 +4,9 @@ import { BottomNav } from '@/components/navigation/BottomNav';
 import axios from 'axios';
 import { useEffect } from 'react';
 
-export default function HomePage({ baseURL }) {
+export default function HomePage({ baseURL, kakaoKey }) {
   console.log('!!', baseURL);
-
+  console.log("kakao!!!, ", kakaoKey);
   const getData = async () => {
     try {
       const res = await axios.get(`${baseURL}/health`);
