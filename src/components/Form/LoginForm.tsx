@@ -39,6 +39,7 @@ const LoginForm = () => {
       />
       <CustomTextField
         label={'비밀번호'}
+        type="password"
         value={password}
         placeholder="비밀번호를 작성해주세요."
         onChange={(value) => setPassword(value)}
