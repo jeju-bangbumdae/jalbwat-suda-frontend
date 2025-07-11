@@ -34,7 +34,7 @@ export const MainSwiper = () => {
           {guestbookList?.map((el, idx) => {
             return (
               <SSwiperSlide key={idx}>
-                <Link href={`/store/${el.id}`} style={{ width: '100%' }}>
+                <Link href={`/store/${el.storeId}`} style={{ width: '100%' }}>
                   <SlideInner>
                     <div>
                       <Avatar.Root
